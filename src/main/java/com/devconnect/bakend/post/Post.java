@@ -31,6 +31,7 @@ public class Post {
     private String description;
 
     private String imagePublicId;
+
     private String imageUrl;
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -39,4 +40,9 @@ public class Post {
 
     @Enumerated(EnumType.STRING)
     private PostVisibility visibility;
+    private String tags;
+    private long viewCount;
+    public void increaseViewCount(){
+        this.viewCount++;
+    }
 }
