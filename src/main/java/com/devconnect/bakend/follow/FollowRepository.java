@@ -16,6 +16,8 @@ import java.util.List;
 @Repository
 public interface FollowRepository extends JpaRepository<Follow,Long> {
     boolean existsByFollowerAndFollowingAndStatus(User follower,User following,FollowStatus followStatus);
+    boolean existsByFollowerAndFollowing(User follower,User following);
+    Follow findByFollowerAndFollowing(User follower,User following);
     Page<Follow> findByFollowerAndStatus(User follower, FollowStatus status, Pageable pageable);
 
 
@@ -39,4 +41,5 @@ public interface FollowRepository extends JpaRepository<Follow,Long> {
             "FROM Follow f JOIN f.following p JOIN Profile pr ON pr.user = p " +
             "WHERE f.follower = :user AND f.status = :status")
     Page<UserSummaryDTO> findFollowing(@Param("user") User user, @Param("status") FollowStatus status, Pageable pageable);
+
 }
