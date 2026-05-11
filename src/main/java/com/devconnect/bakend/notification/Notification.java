@@ -1,5 +1,6 @@
 package com.devconnect.bakend.notification;
 
+import com.devconnect.bakend.post.Post;
 import com.devconnect.bakend.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,8 +38,8 @@ public class Notification {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
 }

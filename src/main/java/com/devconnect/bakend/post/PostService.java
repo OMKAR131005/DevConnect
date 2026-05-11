@@ -2,6 +2,8 @@ package com.devconnect.bakend.post;
 
 import com.devconnect.bakend.exceptions.NotValidUser;
 import com.devconnect.bakend.exceptions.ResourceNotFoundException;
+import com.devconnect.bakend.notification.NotificationService;
+import com.devconnect.bakend.notification.NotificationType;
 import com.devconnect.bakend.post.dto.CommentRequest;
 import com.devconnect.bakend.post.dto.CommentResponse;
 import com.devconnect.bakend.post.dto.PostRequest;
@@ -27,6 +29,7 @@ public class PostService {
     private final ProfileRepository profileRepository;
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
+    private final NotificationService notificationService;
     public PostResponse createPost(PostRequest request){
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user=userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("user not found"));
@@ -98,6 +101,10 @@ public class PostService {
         }
         else{
             postLikeRepository.save(PostLike.builder().post(post).user(user).build());
+            notificationService.createNotification(
+                    post.getUser(), user, NotificationType.LIKE, post,
+                    user.getUsername() + " liked your post"
+            );
             return true;
         }
 
@@ -108,6 +115,10 @@ public class PostService {
         User user=userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user not found"));
         Comment comment=Comment.builder().post(post).user(user).commentText(request.getCommentText()).build();
         commentRepository.save(comment);
+        notificationService.createNotification(
+                post.getUser(), user, NotificationType.COMMENT, post,
+                user.getUsername() + " commented on your post"
+        );
         Profile profile = profileRepository.findByUser(user);
         return CommentResponse.builder().commentId(comment.getCommentId())
                 .username(user.getUsername())

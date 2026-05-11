@@ -1,5 +1,7 @@
 package com.devconnect.bakend.follow;
 
+import com.devconnect.bakend.notification.NotificationService;
+import com.devconnect.bakend.notification.NotificationType;
 import com.devconnect.bakend.profile.Profile;
 import com.devconnect.bakend.profile.ProfileRepository;
 import com.devconnect.bakend.user.User;
@@ -15,6 +17,7 @@ public class FollowService {
    private final FollowRepository followRepository;
    private final UserRepository userRepository;
    private final ProfileRepository profileRepository;
+   private final NotificationService notificationService;
    public String toggleFollow(String username){
        User user2=userRepository.findByUsername(username);
        if(user2==null){
@@ -36,6 +39,10 @@ public class FollowService {
                follow.setStatus(FollowStatus.FOLLOWING);
            }
            followRepository.save(follow);
+           notificationService.createNotification(
+                   user2, user1, NotificationType.FOLLOW, null,
+                   user1.getUsername() + " started following you"
+           );
            return "Followed";
        }
 
