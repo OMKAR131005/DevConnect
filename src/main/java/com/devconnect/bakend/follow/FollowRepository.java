@@ -42,4 +42,7 @@ public interface FollowRepository extends JpaRepository<Follow,Long> {
             "WHERE f.follower = :user AND f.status = :status")
     Page<UserSummaryDTO> findFollowing(@Param("user") User user, @Param("status") FollowStatus status, Pageable pageable);
 
+    void deleteByFollower(User user);
+
+    void deleteByFollowing(User user);
 }

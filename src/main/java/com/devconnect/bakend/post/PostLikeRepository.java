@@ -18,4 +18,6 @@ public interface PostLikeRepository extends JpaRepository<PostLike,Long> {
     @Modifying
     @Transactional
     void deleteByPost(Post post);
+
+    void deleteByUser(User user);
 }

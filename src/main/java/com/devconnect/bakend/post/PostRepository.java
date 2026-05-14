@@ -28,4 +28,6 @@ public interface PostRepository extends JpaRepository<Post,Long> {
             "WHERE (u IN (SELECT f.following FROM Follow f WHERE f.follower = :me AND f.status = 'FOLLOWING') " +
             "AND p.visibility != 'ONLY_ME') OR u = :me")
     Page<PostResponse> getFeedPosts(@Param("me") User me, Pageable pageable);
+
+    void deleteByUser(User user);
 }

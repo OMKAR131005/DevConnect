@@ -1,6 +1,7 @@
 package com.devconnect.bakend.post;
 
 import com.devconnect.bakend.post.dto.CommentResponse;
+import com.devconnect.bakend.user.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,6 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
     @Modifying
     @Transactional
     void deleteByPost(Post post);
+
+    void deleteByUser(User user);
 }

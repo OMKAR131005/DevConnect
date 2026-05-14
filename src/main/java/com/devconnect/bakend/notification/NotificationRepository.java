@@ -17,4 +17,8 @@ public interface NotificationRepository extends JpaRepository<Notification,Long>
     @Modifying
     @Transactional
     void deleteByCreatedAtBefore(LocalDateTime date);
+
+    void deleteByFromUser(User user);
+
+    void deleteByToUser(User user);
 }
