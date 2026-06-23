@@ -1,5 +1,7 @@
 package com.devconnect.bakend.config;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -30,5 +32,15 @@ public class CookieUtil {
                 maxAge(0).sameSite("Lax")
                 .build();
         httpServletResponse.addHeader(HttpHeaders.SET_COOKIE,responseCookie.toString());
+    }
+    public String getCookieValue(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals(cookieName)) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }
