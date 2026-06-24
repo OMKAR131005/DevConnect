@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -69,5 +70,9 @@ public class PostController {
     public ResponseEntity<Page<PostResponse>> getUserPosts(@PathVariable String username, @RequestParam int page, @RequestParam int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(postService.getUserPosts(pageable, username));
+    }
+    @PostMapping("/{postId}/image")
+    public ResponseEntity<PostResponse> uploadImage(@PathVariable Long postId, @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(postService.uploadImage(postId, file));
     }
 }

@@ -1,5 +1,7 @@
 package com.devconnect.bakend.post;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.devconnect.bakend.exceptions.NotValidUser;
 import com.devconnect.bakend.exceptions.ResourceNotFoundException;
 import com.devconnect.bakend.notification.NotificationService;
@@ -18,7 +20,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ public class PostService {
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
     private final NotificationService notificationService;
+    private final Cloudinary cloudinary;
     public PostResponse createPost(PostRequest request){
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user=userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("user not found"));
@@ -163,5 +168,40 @@ public class PostService {
         User user=userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user not found"));
        return postRepository.getFeedPosts(user,pageable);
 
+    }
+
+    public PostResponse uploadImage(Long postId, MultipartFile file) {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("post not found"));
+        if (!post.getUser().getUserId().equals(userId)) {
+            throw new NotValidUser("user not able to upload image");
+        }
+        try {
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                    ObjectUtils.asMap("folder", "devconnect/posts"));
+            post.setImageUrl((String) uploadResult.get("secure_url"));
+            post.setImagePublicId((String) uploadResult.get("public_id"));
+            postRepository.save(post);
+        } catch (Exception e) {
+            throw new RuntimeException("Image upload failed");
+        }
+        Profile profile = profileRepository.findByUser(post.getUser());
+        return PostResponse.builder()
+                .postId(post.getId())
+                .username(post.getUser().getUsername())
+                .profilePicture(profile.getProfilePicture())
+                .title(post.getTitle())
+                .description(post.getDescription())
+                .tags(post.getTags())
+                .imageUrl(post.getImageUrl())
+                .visibility(post.getVisibility())
+                .likeCount((int) postLikeRepository.countByPost(post))
+                .commentCount((int) commentRepository.countByPost(post))
+                .viewCount(post.getViewCount())
+                .isLikedByMe(false)
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
+                .build();
     }
 }
