@@ -1,0 +1,454 @@
+{
+  "info": {
+    "name": "DevConnect API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8090"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/register", "host": ["{{base_url}}"], "path": ["api", "auth", "register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"omkar123\",\n  \"email\": \"omkar@example.com\",\n  \"password\": \"omkar123\",\n  \"isMfaActive\": false,\n  \"fullName\": \"Omkar Kulkarni\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api", "auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"omkar@example.com\",\n  \"password\": \"omkar123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify 2FA",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/auth/verify-2fa?code=123456",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "verify-2fa"],
+              "query": [{ "key": "code", "value": "123456" }]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/auth/logout", "host": ["{{base_url}}"], "path": ["api", "auth", "logout"] }
+          }
+        },
+        {
+          "name": "Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/auth/status", "host": ["{{base_url}}"], "path": ["api", "auth", "status"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/search?keyword=omkar&page=0&size=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "search"],
+              "query": [
+                { "key": "keyword", "value": "omkar" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete My Account",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/users/me", "host": ["{{base_url}}"], "path": ["api", "users", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Get Profile by Username",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/profile/omkar123", "host": ["{{base_url}}"], "path": ["api", "profile", "omkar123"] }
+          }
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/profile/me", "host": ["{{base_url}}"], "path": ["api", "profile", "me"] }
+          }
+        },
+        {
+          "name": "Update Basic Info",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/profile/me/basic", "host": ["{{base_url}}"], "path": ["api", "profile", "me", "basic"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Omkar Kulkarni\",\n  \"headLine\": \"Full Stack Developer\",\n  \"role\": \"Backend Developer\",\n  \"domain\": \"Web Development\",\n  \"about\": \"Passionate developer from SGGS Nanded\",\n  \"tags\": \"java,springboot,react\",\n  \"isPrivate\": false,\n  \"showStats\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Toggle Privacy",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/profile/me/privacy", "host": ["{{base_url}}"], "path": ["api", "profile", "me", "privacy"] }
+          }
+        },
+        {
+          "name": "Update Education",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/profile/me/education", "host": ["{{base_url}}"], "path": ["api", "profile", "me", "education"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"institution\": \"SGGS Institute of Engineering & Technology\",\n  \"educationDegree\": \"B.Tech IT\",\n  \"cgpa\": 8.23\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Social Links",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/profile/me/social", "host": ["{{base_url}}"], "path": ["api", "profile", "me", "social"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"socialLinkedin\": \"https://linkedin.com/in/omkar\",\n  \"socialEmail\": \"omkar@example.com\",\n  \"socialYoutube\": \"\",\n  \"socialDiscord\": \"\",\n  \"socialStackoverflow\": \"\",\n  \"socialFacebook\": \"\",\n  \"socialInstagram\": \"\",\n  \"socialTwitterx\": \"\",\n  \"socialTelegram\": \"\",\n  \"socialOthers\": \"\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Dev Profile",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/profile/me/dev", "host": ["{{base_url}}"], "path": ["api", "profile", "me", "dev"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"githubHandle\": \"OMKAR131005\",\n  \"gitlabHandle\": \"\",\n  \"portfolioUrl\": \"\",\n  \"leetcodeHandle\": \"omkar131005\",\n  \"codeforcesHandle\": \"\",\n  \"gfgHandle\": \"\",\n  \"hackerRank\": \"\",\n  \"atcoderHandle\": \"\",\n  \"codechefHandle\": \"\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Followers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/profile/omkar123/followers?page=0&size=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "profile", "omkar123", "followers"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Following",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/profile/omkar123/following?page=0&size=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "profile", "omkar123", "following"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Post",
+      "item": [
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/posts", "host": ["{{base_url}}"], "path": ["api", "posts"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My First Post\",\n  \"description\": \"This is a test post from DevConnect\",\n  \"tags\": \"java,springboot\",\n  \"visibility\": \"PUBLIC\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Post",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/posts/1", "host": ["{{base_url}}"], "path": ["api", "posts", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Post Title\",\n  \"description\": \"Updated description\",\n  \"tags\": \"java,microservices\",\n  \"visibility\": \"PUBLIC\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/posts/1", "host": ["{{base_url}}"], "path": ["api", "posts", "1"] }
+          }
+        },
+        {
+          "name": "Toggle Like",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/posts/1/like", "host": ["{{base_url}}"], "path": ["api", "posts", "1", "like"] }
+          }
+        },
+        {
+          "name": "Add Comment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/posts/1/comment", "host": ["{{base_url}}"], "path": ["api", "posts", "1", "comment"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"commentText\": \"Great post!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/posts/1/comment/1", "host": ["{{base_url}}"], "path": ["api", "posts", "1", "comment", "1"] }
+          }
+        },
+        {
+          "name": "Get Post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/posts/1", "host": ["{{base_url}}"], "path": ["api", "posts", "1"] }
+          }
+        },
+        {
+          "name": "Get Comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/posts/1/comments?page=0&size=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts", "1", "comments"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Feed",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/posts/feed?page=0&size=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts", "feed"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/posts/user/omkar123?page=0&size=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts", "user", "omkar123"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload Post Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/posts/1/image", "host": ["{{base_url}}"], "path": ["api", "posts", "1", "image"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "file", "type": "file", "src": "" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Follow",
+      "item": [
+        {
+          "name": "Toggle Follow",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/follow/omkar123", "host": ["{{base_url}}"], "path": ["api", "follow", "omkar123"] }
+          }
+        },
+        {
+          "name": "Get Follow Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/follow/omkar123/status", "host": ["{{base_url}}"], "path": ["api", "follow", "omkar123", "status"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Message",
+      "item": [
+        {
+          "name": "Get Chat History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/messages/omkar123?page=0&size=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "messages", "omkar123"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Send Message (WebSocket)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/app/chat", "host": ["{{base_url}}"], "path": ["app", "chat"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"receiverUsername\": \"omkar123\",\n  \"messageText\": \"Hello from DevConnect!\"\n}"
+            },
+            "description": "This is a STOMP WebSocket endpoint. Use a WebSocket client (e.g. websocat or frontend) to connect to ws://localhost:8090/ws and send to /app/chat"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/notifications?page=0&size=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "notifications"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/notifications/1/read", "host": ["{{base_url}}"], "path": ["api", "notifications", "1", "read"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ranking",
+      "item": [
+        {
+          "name": "Get Top Rankings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/ranking/top?topN=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ranking", "top"],
+              "query": [{ "key": "topN", "value": "10" }]
+            }
+          }
+        },
+        {
+          "name": "Refresh Rankings",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/api/ranking/refresh", "host": ["{{base_url}}"], "path": ["api", "ranking", "refresh"] }
+          }
+        }
+      ]
+    }
+  ]
+}
